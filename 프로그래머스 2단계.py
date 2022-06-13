@@ -1,3 +1,5 @@
+## 리스트로 되어있는 행렬곱
+
 def solution(arr1, arr2):
     answer = []
     for i in range(len(arr1)):
