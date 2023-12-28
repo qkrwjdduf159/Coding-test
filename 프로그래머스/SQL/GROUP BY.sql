@@ -52,3 +52,17 @@ WHERE A.TOTAL_SALES>=700000 ORDER BY TOTAL_SALES
 -- PRODUCT 테이블에서 만원 단위의 가격대 별로 상품 개수를 출력하는 SQL 문을 작성해주세요.
 -- 이때 컬럼명은 각각 컬럼명은 PRICE_GROUP, PRODUCTS로 지정해주시고 가격대 정보는 각 구간의 최소금액(10,000원 이상 ~ 20,000 미만인 구간인 경우 10,000)으로 표시해주세요. 결과는 가격대를 기준으로 오름차순 정렬해주세요.
 SELECT FLOOR(PRICE/10000)*10000 AS PRICE_GROUP, COUNT(*) PRODUCT FROM PRODUCT GROUP BY PRICE_GROUP ORDER BY PRICE_GROUP
+
+-- 상반기 동안 각 아이스크림 성분 타입과 성분 타입에 대한 아이스크림의 총주문량을 총주문량이 작은 순서대로 조회하는 SQL 문을 작성해주세요. 이때 총주문량을 나타내는 컬럼명은 TOTAL_ORDER로 지정해주세요.
+SELECT INGREDIENT_TYPE, SUM(TOTAL_ORDER) AS TOTAL_ORDER FROM (FIRST_HALF AS A INNER JOIN ICECREAM_INFO AS B ON A.FLAVOR = B.FLAVOR) GROUP BY INGREDIENT_TYPE ORDER BY TOTAL_ORDER
+
+-- CAR_RENTAL_COMPANY_CAR 테이블에서 '통풍시트', '열선시트', '가죽시트' 중 하나 이상의 옵션이 포함된 자동차가 자동차 종류 별로 몇 대인지 출력하는 SQL문을 작성해주세요. 
+-- 이때 자동차 수에 대한 컬럼명은 CARS로 지정하고, 결과는 자동차 종류를 기준으로 오름차순 정렬해주세요.
+SELECT CAR_TYPE, COUNT(*) AS CARS FROM CAR_RENTAL_COMPANY_CAR 
+WHERE OPTIONS LIKE '%가죽시트%' OR OPTIONS LIKE '%열선시트%' OR OPTIONS LIKE '%통풍시트%'
+GROUP BY CAR_TYPE ORDER BY CAR_TYPE
+
+-- APPOINTMENT 테이블에서 2022년 5월에 예약한 환자 수를 진료과코드 별로 조회하는 SQL문을 작성해주세요. 
+-- 이때, 컬럼명은 '진료과 코드', '5월예약건수'로 지정해주시고 결과는 진료과별 예약한 환자 수를 기준으로 오름차순 정렬하고, 예약한 환자 수가 같다면 진료과 코드를 기준으로 오름차순 정렬해주세요.
+-- ORDER BY에서 변수 명을 수정한다면 바뀌지 않는다 -> 숫자로 표현하는 연습이 필요
+SELECT MCDP_CD AS '진료과코드', COUNT(APNT_NO) AS '5월예약건수' FROM APPOINTMENT WHERE MONTH(APNT_YMD)=5 AND YEAR(APNT_YMD)=2022 GROUP BY MCDP_CD ORDER BY 2,1
