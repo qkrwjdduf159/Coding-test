@@ -66,3 +66,18 @@ GROUP BY CAR_TYPE ORDER BY CAR_TYPE
 -- 이때, 컬럼명은 '진료과 코드', '5월예약건수'로 지정해주시고 결과는 진료과별 예약한 환자 수를 기준으로 오름차순 정렬하고, 예약한 환자 수가 같다면 진료과 코드를 기준으로 오름차순 정렬해주세요.
 -- ORDER BY에서 변수 명을 수정한다면 바뀌지 않는다 -> 숫자로 표현하는 연습이 필요
 SELECT MCDP_CD AS '진료과코드', COUNT(APNT_NO) AS '5월예약건수' FROM APPOINTMENT WHERE MONTH(APNT_YMD)=5 AND YEAR(APNT_YMD)=2022 GROUP BY MCDP_CD ORDER BY 2,1
+
+-- USER_INFO 테이블과 ONLINE_SALE 테이블에서 년, 월, 성별 별로 상품을 구매한 회원수를 집계하는 SQL문을 작성해주세요. 결과는 년, 월, 성별을 기준으로 오름차순 정렬해주세요. 
+-- 이때, 성별 정보가 없는 경우 결과에서 제외해주세요.
+SELECT B.YEAR,B.MONTH,A.GENDER, COUNT(DISTINCT(A.USER_ID)) AS USERS 
+FROM (SELECT USER_ID, GENDER FROM USER_INFO WHERE GENDER IS NOT NULL) AS A 
+INNER JOIN (SELECT USER_ID, YEAR(SALES_DATE) AS YEAR, MONTH(SALES_DATE) AS MONTH FROM ONLINE_SALE) AS B ON A.USER_ID=B.USER_ID 
+GROUP BY YEAR,MONTH,GENDER ORDER BY 1,2,3
+
+-- FOOD_PRODUCT 테이블에서 식품분류별로 가격이 제일 비싼 식품의 분류, 가격, 이름을 조회하는 SQL문을 작성해주세요. 
+-- 이때 식품분류가 '과자', '국', '김치', '식용유'인 경우만 출력시켜 주시고 결과는 식품 가격을 기준으로 내림차순 정렬해주세요.
+SELECT A.CATEGORY,MAX(A.PRICE) AS MAX_PRICE, B.PRODUCT_NAME 
+FROM (SELECT CATEGORY,MAX(PRICE) AS PRICE,PRODUCT_NAME FROM FOOD_PRODUCT GROUP BY CATEGORY) AS A LEFT JOIN (SELECT CATEGORY, PRODUCT_NAME,PRICE FROM FOOD_PRODUCT) AS B 
+ON A.CATEGORY=B.CATEGORY AND A.PRICE=B.PRICE 
+WHERE A.CATEGORY IN ('과자','국','김치','식용유')
+GROUP BY A.CATEGORY, B.PRODUCT_NAME ORDER BY 2 DESC
