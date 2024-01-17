@@ -43,3 +43,23 @@ SELECT * FROM CAR_RENTAL_COMPANY_CAR WHERE OPTIONS LIKE '%네비게이션%' ORDE
 
 -- PRODUCT 테이블에서 상품 카테고리 코드(PRODUCT_CODE 앞 2자리) 별 상품 개수를 출력하는 SQL문을 작성해주세요. 결과는 상품 카테고리 코드를 기준으로 오름차순 정렬해주세요.
 SELECT LEFT(PRODUCT_CODE,2) AS CATEGORY, COUNT(*) AS PRODUCT FROM PRODUCT GROUP BY LEFT(PRODUCT_CODE,2)
+
+-- USED_GOODS_BOARD 테이블에서 2022년 10월 5일에 등록된 중고거래 게시물의 게시글 ID, 작성자 ID, 게시글 제목, 가격, 거래상태를 조회하는 SQL문을 작성해주세요.
+-- 거래상태가 SALE 이면 판매중, RESERVED이면 예약중, DONE이면 거래완료 분류하여 출력해주시고, 결과는 게시글 ID를 기준으로 내림차순 정렬해주세요.
+SELECT BOARD_ID, WRITER_ID, TITLE, PRICE,
+CASE
+WHEN STATUS='DONE' THEN '거래완료'
+WHEN STATUS='SALE' THEN '판매중'
+WHEN STATUS='RESERVED' THEN '예약중'
+END
+AS STATUS
+FROM USED_GOODS_BOARD 
+WHERE DATE_FORMAT(CREATED_DATE,'%Y-%m-%d')='2022-10-05' ORDER BY 1 DESC
+
+-- CAR_RENTAL_COMPANY_RENTAL_HISTORY 테이블에서 평균 대여 기간이 7일 이상인 자동차들의 자동차 ID와 평균 대여 기간(컬럼명: AVERAGE_DURATION) 리스트를 출력하는 SQL문을 작성해주세요.
+-- 평균 대여 기간은 소수점 두번째 자리에서 반올림하고, 결과는 평균 대여 기간을 기준으로 내림차순 정렬해주시고, 평균 대여 기간이 같으면 자동차 ID를 기준으로 내림차순 정렬해주세요.
+SELECT CAR_ID, ROUND(AVG(DATEDIFF(END_DATE,START_DATE)+1),1) AS AVERAGE_DURATION 
+FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY 
+GROUP BY CAR_ID 
+HAVING AVG(DATEDIFF(END_DATE,START_DATE)+1)>=7
+ORDER BY 2 DESC, 1 DESC
