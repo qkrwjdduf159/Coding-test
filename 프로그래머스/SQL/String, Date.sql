@@ -63,3 +63,29 @@ FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY
 GROUP BY CAR_ID 
 HAVING AVG(DATEDIFF(END_DATE,START_DATE)+1)>=7
 ORDER BY 2 DESC, 1 DESC
+
+-- CAR_RENTAL_COMPANY_CAR 테이블과 CAR_RENTAL_COMPANY_RENTAL_HISTORY 테이블에서 자동차 종류가 '세단'인 자동차들 중 10월에 대여를 시작한 기록이 있는 자동차 ID 리스트를 출력하는 SQL문을 작성해주세요. 
+-- 자동차 ID 리스트는 중복이 없어야 하며, 자동차 ID를 기준으로 내림차순 정렬해주세요.
+SELECT DISTINCT A.CAR_ID 
+FROM (SELECT CAR_ID FROM CAR_RENTAL_COMPANY_CAR WHERE CAR_TYPE='세단') AS A INNER JOIN (SELECT CAR_ID FROM CAR_RENTAL_COMPANY_RENTAL_HISTORY WHERE MONTH(START_DATE)=10) AS B ON A.CAR_ID=B.CAR_ID 
+ORDER BY 1 DESC
+
+-- FOOD_ORDER 테이블에서 5월 1일을 기준으로 주문 ID, 제품 ID, 출고일자, 출고여부를 조회하는 SQL문을 작성해주세요.
+-- 출고여부는 5월 1일까지 출고완료로 이 후 날짜는 출고 대기로 미정이면 출고미정으로 출력해주시고, 결과는 주문 ID를 기준으로 오름차순 정렬해주세요.
+SELECT ORDER_ID, PRODUCT_ID,DATE_FORMAT(OUT_DATE,'%Y-%m-%d') AS OUT_DATE,
+CASE
+WHEN OUT_DATE<='2022-05-01' THEN '출고완료'
+WHEN OUT_DATE>'2022-05-01' THEN '출고대기'
+WHEN MONTH(OUT_DATE) IS NULL THEN '출고미정'
+END
+AS '출고여부'
+FROM FOOD_ORDER
+ORDER BY 1
+
+-- USED_GOODS_BOARD와 USED_GOODS_FILE 테이블에서 조회수가 가장 높은 중고거래 게시물에 대한 첨부파일 경로를 조회하는 SQL문을 작성해주세요. 첨부파일 경로는 FILE ID를 기준으로 내림차순 정렬해주세요. 기본적인 파일경로는 /home/grep/src/ 이며, 게시글 ID를 기준으로 디렉토리가 구분되고, 파일이름은 파일 ID, 파일 이름, 파일 확장자로 구성되도록 출력해주세요.
+-- 조회수가 가장 높은 게시물은 하나만 존재합니다.
+SELECT CONCAT('/home/grep/src/',A.BOARD_ID,'/' ,B.FILE_ID,B.FILE_NAME,B.FILE_EXT) AS FILE_PATH 
+FROM (SELECT BOARD_ID,VIEWS FROM USED_GOODS_BOARD ORDER BY VIEWS DESC LIMIT 1) AS A 
+LEFT JOIN (SELECT * FROM USED_GOODS_FILE) AS B 
+ON A.BOARD_ID=B.BOARD_ID 
+ORDER BY B.FILE_ID DESC
