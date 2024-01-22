@@ -43,3 +43,42 @@ count(distinct(case when category='Technology' THEN order_id end)) as Technology
 FROM records
 group by region
 ORDER BY 1
+
+-- points 테이블에 쿼리를 수행해 quartet으로 구분되는 각 서브셋 데이터에 대해서 아래 통계량을 계산하는 쿼리를 작성해주세요. 계산된 값은 소수점 아래 셋째 자리에서 반올림 해야 합니다.
+-- 결과 데이터에는 아래 5개의 컬럼이 존재 해야 합니다.
+SELECT
+  quartet,
+  round(avg(x), 2) as x_mean,
+  round(variance(x),2) as x_var,
+  round(avg(y), 2) as y_mean,
+  round(variance(y),2) as y_var
+FROM
+  points
+group by
+  quartet
+  
+-- 쿼리 결과에는 모든 컬럼이 출력되어야 합니다. 테이블 당 일행의 수는 size 컬럼에 들어있습니다. 예를 들어, 5명이서 방문한 테이블의 경우 size 컬럼의 값이 5입니다.
+SELECT * FROM tips WHERE size%2==1
+
+-- 2000년 이후 올림픽이 개최된 도시의 이름을 앞에서부터 3글자만 추출하는 쿼리를 작성해주세요. 쿼리 결과에는 올림픽 개최년도와 개최 도시만 출력되도록 하되, 도시 이름은 대문자로 출력되어야합니다.
+-- 쿼리 결과에는 아래 두 개의 컬럼이 있어야하고, 결과는 최근에 개최된 도시부터 내림차순으로 정렬되어있어야 합니다.
+SELECT
+  year,
+  upper(substr(city, 1, 3)) as city
+FROM
+  games
+WHERE
+  year >= 2000
+ORDER BY
+  1 DESC
+
+-- 우리 플랫폼에서 상품을 많이 판매하고 있는 판매자가 누구인지 알고 싶습니다. 총 주문이 100건 이상 들어온 판매자 리스트를 출력하는 쿼리를 작성해주세요.
+SELECT
+  seller_id,
+  count(distinct order_id) as orders
+FROM
+  olist_order_items_dataset
+group by
+  seller_id
+having
+  count(distinct order_id) >= 100
