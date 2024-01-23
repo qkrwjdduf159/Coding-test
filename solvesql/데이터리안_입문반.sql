@@ -82,3 +82,36 @@ group by
   seller_id
 having
   count(distinct order_id) >= 100
+
+  -- 요일별로 팁 총액을 집계하고 팁이 가장 많았던 요일과 그날의 팁 총액을 출력하는 쿼리를 작성해주세요. 그날의 팁 총액은 소수점 셋째 자리에서 반올림하여 출력되도록 해주세요.
+  SELECT
+  day,
+  round(sum(tip), 2) as tip_daily
+FROM
+  tips
+GROUP BY
+  day
+ORDER BY
+  2 DESC
+limit
+  1
+
+-- 주문 일자를 나타내는 order_purchase_timestamp 컬럼을 통해 첫 주문 일자와 마지막 주문 일자를 알아보려고 합니다. 아래 두 컬럼을 포함하는 쿼리를 작성해주세요.
+SELECT
+  date(min(order_purchase_timestamp)) as first_order_date,
+  date(max(order_purchase_timestamp)) as last_order_date
+FROM
+  olist_orders_dataset
+
+-- tips 테이블에는 식사 금액, 팁, 결제자 성별, 요일, 시간대 등 어느 레스토랑의 테이블 당 결제에 관련된 데이터가 들어있습니다. 식사 금액이 테이블 당 평균 식사 금액보다 더 많은 경우를 모두 출력하는 쿼리를 작성해주세요. 결과에는 tips 테이블에 있는 모든 컬럼이 포함되어야 합니다.
+SELECT
+  *
+FROM
+  tips
+where
+  total_bill >= (
+    SELECT
+      avg(total_bill)
+    FROM
+      tips
+  )
