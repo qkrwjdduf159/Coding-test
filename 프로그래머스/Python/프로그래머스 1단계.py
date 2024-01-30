@@ -47,4 +47,28 @@ def solution(friends, gifts):
                 else:
                     pass
     return int(max(data_dict.values()))
-                        
+            
+# 배열 array의 i번째 숫자부터 j번째 숫자까지 자르고 정렬했을 때, k번째에 있는 수를 구하려 합니다.
+# 예를 들어 array가 [1, 5, 2, 6, 3, 7, 4], i = 2, j = 5, k = 3이라면
+# array의 2번째부터 5번째까지 자르면 [5, 2, 6, 3]입니다.
+# 1에서 나온 배열을 정렬하면 [2, 3, 5, 6]입니다.
+# 2에서 나온 배열의 3번째 숫자는 5입니다.
+# 배열 array, [i, j, k]를 원소로 가진 2차원 배열 commands가 매개변수로 주어질 때, commands의 모든 원소에 대해 앞서 설명한 연산을 적용했을 때 나온 결과를 배열에 담아 return 하도록 solution 함수를 작성해주세요.
+def solution(array, commands):
+    answer = []
+    for i in commands:
+        sub_array = array[i[0]-1:i[1]]
+        print(sub_array)
+        num = sorted(sub_array)[i[2]-1]
+        answer.append(num)
+    return answer
+
+
+# 문자열로 구성된 리스트 strings와, 정수 n이 주어졌을 때, 각 문자열의 인덱스 n번째 글자를 기준으로 오름차순 정렬하려 합니다.
+# 예를 들어 strings가 ["sun", "bed", "car"]이고 n이 1이면 각 단어의 인덱스 1의 문자 "u", "e", "a"로 strings를 정렬합니다.
+def solution(strings, n):
+    
+    strings = sorted(strings)
+    answer = sorted(strings, key=lambda x:x[n])
+
+    return answer
