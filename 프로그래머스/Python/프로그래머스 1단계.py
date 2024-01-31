@@ -118,3 +118,51 @@ def solution(n, arr1, arr2):
         answer.append(str_1)
         
     return answer
+
+
+# 콜라를 받기 위해 마트에 주어야 하는 병 수 a, 빈 병 a개를 가져다 주면 마트가 주는 콜라 병 수 b, 상빈이가 가지고 있는 빈 병의 개수 n이 매개변수로 주어집니다.
+# 상빈이가 받을 수 있는 콜라의 병 수를 return 하도록 solution 함수를 작성해주세요.
+def solution(a, b, n):
+    answer = 0
+    anything = 0
+    while True:
+        n, anything = (n+anything)//a, (n+anything)%a
+        n = n*b
+        answer += n
+        if n==0:
+            break
+    
+    return answer
+
+## 그리워하는 사람의 이름을 담은 문자열 배열 name, 각 사람별 그리움 점수를 담은 정수 배열 yearning, 각 사진에 찍힌 인물의 이름을 담은 이차원 문자열 배열 photo가 매개변수로 주어질 때,
+## 사진들의 추억 점수를 photo에 주어진 순서대로 배열에 담아 return하는 solution 함수를 완성해주세요.
+def solution(name, yearning, photo):
+    score_dict = {}
+    answer = []
+    for name, num in zip(name, yearning):
+        score_dict[name] = num
+        
+    for i in photo:
+        score = 0
+        for k in i:
+            if k in score_dict.keys():
+                score += score_dict[k]
+            else:
+                score += 0
+        
+        answer.append(score)
+    return answer
+
+## 명예의 전당 목록의 점수의 개수 k, 1일부터 마지막 날까지 출연한 가수들의 점수인 score가 주어졌을 때, 매일 발표된 명예의 전당의 최하위 점수를 return하는 solution 함수를 완성해주세요.
+def solution(k, score):
+    answer = []
+    sub_answer = []
+    for i in score:
+        sub_answer.append(i)
+        sub_answer = sorted(sub_answer)
+        if k>=len(sub_answer):
+            answer.append(min(sub_answer))
+        else:
+            answer.append(min(sub_answer[-k:]))
+    return answer
+
