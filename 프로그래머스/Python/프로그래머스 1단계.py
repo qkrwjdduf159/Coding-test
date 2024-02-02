@@ -166,3 +166,30 @@ def solution(k, score):
             answer.append(min(sub_answer[-k:]))
     return answer
 
+## 문자열로 이루어진 배열 cards1, cards2와 원하는 단어 배열 goal이 매개변수로 주어질 때, cards1과 cards2에 적힌 단어들로 goal를 만들 있다면 "Yes"를, 만들 수 없다면 "No"를 return하는 solution 함수를 완성해주세요
+def solution(cards1, cards2, goal):
+    for i in goal:
+        if (len(cards1)>0) and (i==cards1[0]):
+            cards1.pop(0)
+        elif (len(cards2)>0) and (i==cards2[0]):
+            cards2.pop(0)
+        else:
+            return "No"
+        
+    return "Yes"
+
+## 2016년은 윤년입니다. 2016년 a월 b일은 실제로 있는 날입니다. (13월 26일이나 2월 45일같은 날짜는 주어지지 않습니다)
+import pandas as pd
+yoil = ['MON','TUE','WED','THU','FRI','SAT','SUN']
+def solution(a, b):
+    return yoil[pd.to_datetime(f'2016-{a}-{b}').weekday()]
+
+## 당신은 최대한 다양한 종류의 폰켓몬을 가지길 원하기 때문에, 최대한 많은 종류의 폰켓몬을 포함해서 N/2마리를 선택하려 합니다. N마리 폰켓몬의 종류 번호가 담긴 배열 nums가 매개변수로 주어질 때, N/2마리의 폰켓몬을 선택하는 방법 중,
+## 가장 많은 종류의 폰켓몬을 선택하는 방법을 찾아, 그때의 폰켓몬 종류 번호의 개수를 return 하도록 solution 함수를 완성해주세요.
+def solution(nums):
+    number = len(nums)/2
+    a = set(nums)
+    if len(a)>=number:
+        return number
+    elif len(a) < number:
+        return len(a)
