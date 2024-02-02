@@ -193,3 +193,46 @@ def solution(nums):
         return number
     elif len(a) < number:
         return len(a)
+    
+    
+
+## 사과의 최대 점수 k, 한 상자에 들어가는 사과의 수 m, 사과들의 점수 score가 주어졌을 때, 과일 장수가 얻을 수 있는 최대 이익을 return하는 solution 함수를 완성해주세요.
+def solution(k, m, score):
+    answer = 0
+    box = sorted(score, reverse = True)
+    # k = 최대 값
+    # m = 상자에 들어가야 하는 사과 수
+    for i in range(0,len(box), m):
+        if len(box)-i >= m:
+            answer += min(box[i:i+m])*m
+        
+    return answer
+ 
+## 1번 문제부터 마지막 문제까지의 정답이 순서대로 들은 배열 answers가 주어졌을 때, 가장 많은 문제를 맞힌 사람이 누구인지 배열에 담아 return 하도록 solution 함수를 작성해주세요.
+
+def solution(answers):
+    list_1 = [1,2,3,4,5]
+    list_2 = [2,1,2,3,2,4,2,5]
+    list_3 = [3,3,1,1,2,2,4,4,5,5]
+    answer_1 = 0
+    answer_2 = 0
+    answer_3 = 0
+    for i in range(len(answers)):
+        if answers[i] == list_1[i%len(list_1)]:
+            answer_1 +=1
+        if answers[i] == list_2[i%len(list_2)]:
+            answer_2 += 1
+        if answers[i] == list_3[i%len(list_3)]:
+            answer_3 += 1
+    answer = []
+    right_answer = max(answer_1, answer_2, answer_3)
+    if answer_1==right_answer:
+        answer.append(1)
+    if answer_2==right_answer:
+        answer.append(2)
+    if answer_3== right_answer:
+        answer.append(3)
+        
+    return answer
+
+## 
