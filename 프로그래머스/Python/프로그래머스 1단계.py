@@ -235,4 +235,33 @@ def solution(answers):
         
     return answer
 
-## 
+## 기사단원의 수를 나타내는 정수 number와 이웃나라와 협약으로 정해진 공격력의 제한수치를 나타내는 정수 limit와 제한수치를 초과한 기사가 사용할 무기의 공격력을 나타내는 정수 power가 주어졌을 때,
+## 무기점의 주인이 무기를 모두 만들기 위해 필요한 철의 무게를 return 하는 solution 함수를 완성하시오.
+def solution(number, limit, power):
+    final_list = []
+    for i in range(1, number+1):
+        a = 0
+        for k in range(1,int(i**0.5)+1):
+            if i%k == 0:
+                a += 1
+                if k**2!=i:
+                    a+=1
+        if a>limit:
+            a = power
+            
+        final_list.append(a)
+    return sum(final_list)
+
+## 주어진 숫자 중 3개의 수를 더했을 때 소수가 되는 경우의 개수를 구하려고 합니다. 숫자들이 들어있는 배열 nums가 매개변수로 주어질 때, nums에 있는 숫자들 중 서로 다른 3개를 골라 더했을 때 소수가 되는 경우의 개수를 return 하도록 solution 함수를 완성해주세요.
+import itertools
+def solution(nums):
+    answer = 0
+    for i in itertools.combinations(nums,3):
+        a = sum(i)
+        b = 0
+        for k in range(1,int(a**0.5)+1):
+            if a%k==0:
+                b+=1
+        if b==1:
+            answer +=1
+    return answer
