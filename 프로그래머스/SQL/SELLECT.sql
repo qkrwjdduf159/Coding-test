@@ -100,3 +100,8 @@ ORDER BY FACTORY_ID
 
 -- 잡은 물고기 중 길이가 10cm 이하인 물고기의 수를 출력하는 SQL 문을 작성해주세요. 물고기의 수를 나타내는 컬럼 명은 FISH_COUNT로 해주세요.
 SELECT COUNT(*) AS FISH_COUNT FROM FISH_INFO WHERE LENGTH IS NULL
+
+-- DEVELOPER_INFOS 테이블에서 Python 스킬을 가진 개발자의 정보를 조회하려 합니다. Python 스킬을 가진 개발자의 ID, 이메일, 이름, 성을 조회하는 SQL 문을 작성해 주세요. 결과는 ID를 기준으로 오름차순 정렬해 주세요.
+SELECT ID, EMAIL, FIRST_NAME, LAST_NAME FROM DEVELOPER_INFOS
+WHERE (SKILL_1='Python') OR (SKILL_2='Python') OR (SKILL_3='Python')
+ORDER BY ID
